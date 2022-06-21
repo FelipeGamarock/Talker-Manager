@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const readTalkerFile = require('./helpers/readTalkerFile');
+const loginMiddlewareVadition = require('./middlewares/loginValidation');
 
 const app = express();
 app.use(bodyParser.json());
@@ -23,7 +24,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(HTTP_NOTFOUND_STATUS).send({ message: 'Pessoa palestrante não encontrada' });
 });
 
-app.post('/login', (_req, res) => {
+app.post('/login', loginMiddlewareVadition, (_req, res) => {
   const token = crypto.randomBytes(8).toString('hex');
   res.status(HTTP_OK_STATUS).send({ token });
 });
