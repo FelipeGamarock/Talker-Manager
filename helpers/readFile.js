@@ -1,8 +1,8 @@
-const { readFile } = require('fs').promises;
+const { readFileSync } = require('fs');
 
-const readFiles = async () => {
-  const talker = await readFile('./talker.json', 'utf8');
+const readFile = () => {
+  const talker = readFileSync('./talker.json');
   return talker;
 };
 
-module.exports = readFiles;
+module.exports = readFile;
