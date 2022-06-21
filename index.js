@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const readFile = require('./helpers/readFile');
+const readTalkerFile = require('./helpers/readTalkerFile');
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,8 +8,8 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
-app.get('/talker', (req, res) => {
-    const talkers = readFile();
+app.get('/talker', async (_req, res) => {
+    const talkers = await readTalkerFile();
     res.status(HTTP_OK_STATUS).send(talkers);
 });
 
