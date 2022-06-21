@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const crypto = require('crypto');
 const readTalkerFile = require('./helpers/readTalkerFile');
 
 const app = express();
@@ -20,6 +21,11 @@ app.get('/talker/:id', async (req, res) => {
   const talkerFound = talkers.find((talker) => talker.id === Number(id));
   if (talkerFound) return res.status(HTTP_OK_STATUS).send(talkerFound);
   return res.status(HTTP_NOTFOUND_STATUS).send({ message: 'Pessoa palestrante não encontrada' });
+});
+
+app.post('/login', (_req, res) => {
+  const token = crypto.randomBytes(8).toString('hex');
+  res.status(HTTP_OK_STATUS).send({ token });
 });
 
 // não remova esse endpoint, e para o avaliador funcionar
