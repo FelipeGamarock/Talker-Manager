@@ -52,6 +52,26 @@ app.post('/talker',
     res.status(201).send(newTalker);
 });
 
+app.put('/talker/:id',
+  authorizationMiddleware,
+  nomeMiddlewareVadition,
+  ageMiddlewareVadition,
+  talkMiddlewareVadition,
+  watchedAtMiddlewareVadition,
+  rateMiddlewareVadition,
+  async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk } = req.body;
+  const talkers = await readTalkerFile();
+  const index = talkers.findIndex((talker) => talker.id === Number(id));
+  if (index === -1) {
+    return res.status(401).json({ message: 'Talker não encontrado' });
+  }
+  talkers[index] = { ...talkers[index], name, age, talk };
+  writeTalkerFile(talkers);
+  res.status(HTTP_OK_STATUS).send(talkers[index]);
+});
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
