@@ -72,6 +72,18 @@ app.put('/talker/:id',
   res.status(HTTP_OK_STATUS).send(talkers[index]);
 });
 
+app.delete('/talker/:id', authorizationMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const talkers = await readTalkerFile();
+  const index = talkers.findIndex((talker) => talker.id === Number(id));
+  if (index === -1) {
+    return res.status(401).json({ message: 'Talker não encontrado' });
+  }
+  talkers.splice(index, 1);
+  writeTalkerFile(talkers);
+  res.status(204).send();
+});
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
